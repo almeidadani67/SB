@@ -36,6 +36,8 @@ int main(int argc, char** argv) {
   	string nomeArquivoEntrada = argv[2];
   	string nomeArquivoSaida	= argv[3];
 
+ 	vector<int> linhaOriginalPre;
+
     // String com o nome dos arquivos de entrada e saida
   	string nomeArquivoPre, nomeArquivoObj;
 
@@ -58,7 +60,7 @@ int main(int argc, char** argv) {
 
 		// A etapa de preprocessamento retira os comentarios e faz o tratamento de tabulacoes, quebra de linhas e espacos desnecessarios
 		case 'p':
-            etapaPreProcessamento(nomeArquivoEntrada, nomeArquivoPre);
+            etapaPreProcessamento(nomeArquivoEntrada, nomeArquivoPre, linhaOriginalPre);
 			cout << "\n Etapa de preprocessamento realizada " << "\n\n";
 			break;
         

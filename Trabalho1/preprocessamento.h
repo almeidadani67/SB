@@ -10,16 +10,17 @@ using namespace std;
 void etapaPreProcessamento(string, string);
 
 //A etapa de prepreocessamento retira os comentarios, passa tudo para maiusculo e faz o tratamento de tabulacoes, quebra de linhas e espacos desnecessarios
-void etapaPreProcessamento(string nomeArquivoEntrada, string nomeArquivoPre){
+void etapaPreProcessamento(string nomeArquivoEntrada, string nomeArquivoPre, vector<int> &linhaOriginalPre){
 
 	// Leitura do arquivoEntrada e escrita no arquivoPreproc //
 	ifstream arquivoEntrada (nomeArquivoEntrada);
 	ofstream arquivoPreproc (nomeArquivoPre);
+    
+	int i=1;
 
-    string line;
-
-    while(getline(arquivoEntrada,line)){
-		
+    while(!arquivoEntrada.eof()){
+		string line;
+		getline(arquivoEntrada, line);
 		stringstream linha (line);
 
 		//Retira os comentarios 
@@ -54,7 +55,13 @@ void etapaPreProcessamento(string nomeArquivoEntrada, string nomeArquivoPre){
 			line = line.substr(1);
 			}
 
-        arquivoPreproc << line << "\n";
+        // Copia a linha no arquivo de preprocessamento caso a linha nao esteja vazia
+		if (!line.empty()){
+			arquivoPreproc << line << "\n";
+			linhaOriginalPre.push_back(i);
+		}
+
+		i=i++;
     }
 
 	// Fecha os arquivos de entrada e saida
