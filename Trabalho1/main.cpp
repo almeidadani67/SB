@@ -1,5 +1,6 @@
 #include "preprocessamento.h"
 #include "montador.h"
+#include "ligador.h"
 
 int checaArquivo(string);
 void extensaoArquivo(string&, string&, string&, string&);
@@ -23,6 +24,7 @@ void extensaoArquivo(string &nomeArquivoEntrada, string &nomeArquivoPre, string 
 	nomeArquivoObj.append(".o");
 }
 
+
 int main(int argc, char** argv) {
 
 	// Identifica se o numero de argumentos na linha de comando para a execução está correto
@@ -43,6 +45,9 @@ int main(int argc, char** argv) {
 
   	// Acrescenta a extensao dos arquivos de entrada e saida
   	extensaoArquivo(nomeArquivoEntrada, nomeArquivoPre, nomeArquivoObj, nomeArquivoSaida);
+
+	vector<Instrucao> vectorInstrucao = montaVectorInstrucoes();
+	vector<Diretiva> vectorDiretiva = montaVectorDiretiva();
 
     // Verifica se o arquivo de entrada existe
 	if (!confereArquivo(nomeArquivoEntrada)){
