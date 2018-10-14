@@ -1,5 +1,5 @@
 #include "preprocessamento.h"
-
+#include "montador.h"
 
 int checaArquivo(string);
 void extensaoArquivo(string&, string&, string&, string&);
@@ -7,7 +7,6 @@ void extensaoArquivo(string&, string&, string&, string&);
 // Confere se eh possivel abrir o arquivo
 int confereArquivo (string arquivoEntrada){
 	ifstream arquivoEn (arquivoEntrada);
-
 	if(arquivoEn.is_open()){
 		arquivoEn.close();
 		return 1;
@@ -57,10 +56,10 @@ int main(int argc, char** argv) {
 
 	switch(tipoOperacao.back()){
 
-		// O modo de preprocessamento avalia as diretivas EQUs e IFs
+		// A etapa de preprocessamento retira os comentarios e faz o tratamento de tabulacoes, quebra de linhas e espacos desnecessarios
 		case 'p':
             etapaPreProcessamento(nomeArquivoEntrada, nomeArquivoPre);
-			cout << "\n Etapa de pre processamento realizada " << "\n\n";
+			cout << "\n Etapa de preprocessamento realizada " << "\n\n";
 			break;
         
         case 'o':
