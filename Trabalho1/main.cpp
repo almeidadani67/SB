@@ -5,8 +5,8 @@
 int checaArquivo(string);
 void extensaoArquivo(string&, string&, string&, string&);
 
-// Confere se eh possivel abrir o arquivo
-int confereArquivo (string arquivoEntrada){
+// Confere se e possivel abrir o arquivo
+int checaArquivo (string arquivoEntrada){
 	ifstream arquivoEn (arquivoEntrada);
 	if(arquivoEn.is_open()){
 		arquivoEn.close();
@@ -21,9 +21,8 @@ void extensaoArquivo(string &nomeArquivoEntrada, string &nomeArquivoPre, string 
 	nomeArquivoObj = nomeArquivoSaida;
 	nomeArquivoEntrada.append(".asm");
 	nomeArquivoPre.append(".pre");
-	nomeArquivoObj.append(".o");
+	nomeArquivoObj.append(".obj");
 }
-
 
 int main(int argc, char** argv) {
 
@@ -33,24 +32,19 @@ int main(int argc, char** argv) {
 		exit(1);
 	}
 
-	// Cada argumento eh salvo em uma string
 	string tipoOperacao = argv[1];
   	string nomeArquivoEntrada = argv[2];
   	string nomeArquivoSaida	= argv[3];
-
  	vector<int> linhaOriginalPre;
-
-    // String com o nome dos arquivos de entrada e saida
   	string nomeArquivoPre, nomeArquivoObj;
 
-  	// Acrescenta a extensao dos arquivos de entrada e saida
   	extensaoArquivo(nomeArquivoEntrada, nomeArquivoPre, nomeArquivoObj, nomeArquivoSaida);
 
-	vector<Instrucao> vectorInstrucao = montaVectorInstrucoes();
-	vector<Diretiva> vectorDiretiva = montaVectorDiretiva();
+	vector<Instrucao> vectorInstrucao = montagemVectorInstrucoes();
+	vector<Diretiva> vectorDiretiva = montagemVectorDiretiva();
 
-    // Verifica se o arquivo de entrada existe
-	if (!confereArquivo(nomeArquivoEntrada)){
+    // Confere se o arquivo de entrada existe
+	if (!checaArquivo(nomeArquivoEntrada)){
 		cout << "\n O arquivo de entrada nao existe " << "\n\n";
 		exit(1);
 	}
@@ -63,18 +57,24 @@ int main(int argc, char** argv) {
 
 	switch(tipoOperacao.back()){
 
-		// A etapa de preprocessamento retira os comentarios e faz o tratamento de tabulacoes, quebra de linhas e espacos desnecessarios
+		// O preprocessamento retira os comentarios e faz o tratamento de tabulacoes, quebra de linhas e espacos desnecessarios
+		// O preprocessamento tambem faz o tratamento das diretivas IF e EQU
 		case 'p':
-            etapaPreProcessamento(nomeArquivoEntrada, nomeArquivoPre, linhaOriginalPre);
-			cout << "\n Etapa de preprocessamento realizada " << "\n\n";
+            PreProcessamento(nomeArquivoEntrada, nomeArquivoPre, linhaOriginalPre, vectorInstrucao,vectorDiretiva);
+			cout << "\n Preprocessamento realizado " << "\n\n";
 			break;
         
         case 'o':
-            break;
+			PreProcessamento(nomeArquivoEntrada, nomeArquivoPre, linhaOriginalPre, vectorInstrucao,vectorDiretiva);
+            cout << "\n Montagem realizada " << "\n\n";
+			break;
+		
+		case 'l':
+			PreProcessamento(nomeArquivoEntrada, nomeArquivoPre, linhaOriginalPre, vectorInstrucao,vectorDiretiva);
+			break;
 
-		// Modo de operacao diferente de 'p' ou 'o'
 		default:
-			cout << "\n Escolha uma operacao valida (p ou o)" << "\n\n";
+			cout << "\n Escolha uma operacao valida (p, o ou l)" << "\n\n";
 			break;
 	}
 
